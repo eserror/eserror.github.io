@@ -79,7 +79,7 @@ Debo aclarar que, para entender el problema que expongo, no es necesario conocim
 
 El siguiente informe pretende dar una respuesta sobre las vulnerabilidades reportadas, sin embargo, ustedes pueden juzgar por si mismos.  
 
-<iframe src="https://drive.google.com/file/d/1lrfjMORi2kzgDZKoa2Bj39AtHxN9UnUO/preview" width="800" height="650" frameborder="0"></iframe>
+<iframe src="https://drive.google.com/file/d/1lrfjMORi2kzgDZKoa2Bj39AtHxN9UnUO/preview" width="750" height="650" frameborder="0"></iframe>
 
 ## "The Fix"
 
