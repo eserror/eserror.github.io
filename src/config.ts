@@ -1,6 +1,6 @@
 export const SITE = {
   website: "https://eserror.github.io/", 
-  author: "Guy",
+  author: "eserror",
   profile: "https://eserror.github.io/",
   desc: "Change description...",
   title: "Exploited Logic",
@@ -11,6 +11,11 @@ export const SITE = {
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
   showArchives: false,
   showBackButton: true, // show back button in post detail
+  editPost: {
+    enabled: false,
+    text: "Suggest Changes",
+    url: "",
+  },
   dynamicOgImage: true,
   dir: "ltr", // "rtl" | "auto"
   lang: "en", // html lang code. Set this empty and default will be "en"
