@@ -26,6 +26,23 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.11.1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - name: "📦 Install dependencies"
+        run: pnpm install
+
+      - name: "🔎 Lint code"
+        run: pnpm run lint
+
+      - name: "📝 Checking code format"
+        run: pnpm run format:check
+
+      - name: "🚀 Build the project"
+        run: pnpm run build
+
         # with:
         # path: . # The root location of your Astro project inside the repository. (optional)
         # node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 20. (optional)
