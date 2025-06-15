@@ -38,6 +38,11 @@ export default defineConfig({
     },
   },
   vite: {
+    resolve: {
+      alias: {
+        '@assets': '/src/assets',
+      },
+    },
     plugins: [tailwindcss()],
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],

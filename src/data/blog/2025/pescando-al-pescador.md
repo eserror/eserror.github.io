@@ -14,36 +14,36 @@ Hace unos días me encontraba en un grupo de Telegram, y alguien publicó un men
 
 Un usuario llamado Austin, publicó un mensaje en el grupo Python Ecuador de Telegram, donde se encontraba buscando un Software Tester para un supuesto videojuego de metaverso.
 
-![](@assets/images/Pasted image 20250427224337.png)
+![](@assets/images/20250427224337.png)
 
 No suena tan mal la oferta, no? entonces acepté la oferta y después de esto, Austin solicitó información extra para estar seguro de que yo cumplía con los requisitos.
 
-![](@assets/images/Pasted image 20250428094439.png)
+![](@assets/images/20250428094439.png)
 
 Después de haber terminado este cuestionario, que por cierto tiene preguntas interesantes, las cuales te llevarían a pensar que son preguntas inocente o normales dentro del contexto actual, sin embargo hay otra intención detrás de ellas.
 
 Austin "aprueba" mi perfil, y posteriormente me envía información adicional sobre el proyecto, mientras hace una pausa y guarda silencio, anticipando que yo diría algo respecto al videojuego.
 
-![]@assets/images/Pasted image 20250428095505.png)
+![]@assets/images/20250428095505.png)
 
 Debo admitir que todo parece 100% real, pues tienen una comunidad en Discord, un Whitepaper donde se encuentra una [sinopsis](https://eternal-decay.gitbook.io/metaworld) sobre el juego, e incluso una colección de [NFTs](https://opensea.io/collection/eternal-decay-metaverse) 😱
 
 Ya que todo luce legítimo, solicito más detalles sobre las tareas a llevar a cabo, y pregunto qué tan cierto es el tema del pago 💵
 
-![](@assets/images/Pasted image 20250428114519.png)
+![](@assets/images/20250428114519.png)
 
 Entonces es aquí donde Austin elimina toda duda sobre el pago, al ofrecer un cuota inicial para unirme al chat privado del equipo. Y es aquí también, donde la parte más crítica de la operación de Austin puede fallar o tener éxito.
 
-![](@assets/images/Pasted image 20250501122700.png")
+![](@assets/images/20250501122700.png")
 
 La información proporcionada por Austin es un poco random y sin ningún orden, algunas imágenes no coinciden y los pasos de instalación tampoco, ya que la aplicación que se muestra durante la instalación, no es la misma que se descarga para su instalación.
 
 Usé el código proporcionado por Austin, el cuál asumí era necesario para acceder al instalador, e inmediatamente se descargó el supuesto instalador del juego.
 
-![](@assets/images/Pasted image 20250502080418.png)
+![](@assets/images/20250502080418.png)
 Lo primero que me pareció extraño de todo el proceso de instalación, e imagino que puede ser obvio que, usualmente ningún juego no te va a pedir que lo instales a través de la consola 😅
 
-![](@assets/images/Pasted image 20250502081148.png)
+![](@assets/images/20250502081148.png)
 
 El contenido dentro del instalador tiene un peso de menos de 2MB, lo cual podría indicar que el instalador descarga algún tipo de archivo adicional. El archivo `EternalDecay.PEr` llama la atención más que el resto, así que ejecutamos el comando file, para saber qué tipo de archivo es.
 

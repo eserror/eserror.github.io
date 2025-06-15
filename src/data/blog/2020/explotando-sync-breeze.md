@@ -5,6 +5,8 @@ title: "Explotando Sync Breeze Enterprise 10.0.28"
 pubDatetime: 2020-04-29
 featured: false
 description: Explotando Buffer Overflow en Sync Breeze Enterprise
+tags:
+  - BOF
 ---
 
 ## Introducción
@@ -21,7 +23,7 @@ La vulnerabilidad reside en el parámetro ` username` del campo de inicio de ses
 
 Previamente había mencionado que Sync Breeze Enterprise cuenta con una interfaz web, podemos acceder a la misma que se encuentra corriendo en el puerto 80. Analizaremos el tipo de solicitud que se realiza al momento de autenticar a un usuario valido o invalido en la aplicación web.
 
-​ <img src="/src/assets/images/sync_login_request.png">
+![](@assets/images/sync_login_request.png)
 
 Estos datos son suficientes para poder crear un simple fuzzer(software que realiza pruebas enviando datos aleatorios o inesperados por la aplicación con la finalidad de descubrir una falla) y comprobar la vulnerabilidad, de esta forma también podremos conocer en qué momento se desborda la pila al recibir la información enviada.
 
@@ -68,7 +70,7 @@ while (size < 2000):
 
 Una vez tenemos nuestro exploit listo para ejecutar, vamos y añadimos el proceso de Sync Breeze al depurador y corremos el exploit para ver qué información nos muestra.
 
-<img src="/src/assets/images/pila_sobrescrita.png">
+![](@assets/images/pila_sobrescrita.png)
 
 Ahora sabemos que la pila se desborda al enviar 800 bytes como se muestra en el resultado del script fuzzer.py, también podemos ver que el registro EIP ha sido sobrescrito por el valor "41414141", que corresponde a cuatro "A"s en hexadecimal y como ultimo, vemos la excepción que levanta el depurador al haberse desbordado la pila.
 
@@ -131,7 +133,7 @@ except:
 
 Una vez ejecutado el exploit podemos ver que el valor del registro EIP es diferente a las 4 As que teniamos como valor anteriormente. Ahora este registro contiene parte del patron unico que enviamos y que nos va a ayudar a continuar con el proceso de desarrollo de nuestro exploit final.
 
-<img src="/src/assets/images/patron_enviado.png">
+![](@assets/images/patron_enviado.png)
 
 Ahora, vamos a localizar el espacio donde podemos inyectar la dirección donde estará localizada nuestra shellcode. Podemos realizar esta tarea en una forma sencilla con otro script parte del framework Metasploit llamadao pattern_offset.rb de la siguiente manera:
 
@@ -144,7 +146,7 @@ Procedemos a modificar nuestro exploit nuevamente y añadimos nuevos cambios. La
 
 Ahora que añadimos los cambios, veamos los resultados reflejados en el depurador.
 
-<img src="/src/assets/images/cuatroB.png">
+![](@assets/images/cuatroB.png)
 
 Esta vez el registro EIP contiene un valor distinto, esta valor son las 4 Bs que añadimos después de las 780 As y es allí, donde ira la dirección que apunta hacia nuestra shellcode. Ahora, antes que procedamos con lo siguientes pasos debemos sortear algunos obstáculos para que nuestro exploit funcione correctamente.
 
@@ -152,11 +154,11 @@ Antes de continuar debo mencionar que, uno de estos obstáculos es la protecció
 
 Para saltar esta protección debemos encontrar un modulo que se ejecute al mismo tiempo con el programa, no tenga protecciones ASLR o DEP y por ultimo, que la dirección de este modulo no contenga malos caracteres(badchars). Para esto vamos a utilizar una utilidad llamada mona.py que nos ayudará a llevar a cabo esta tarea.
 
-<img src="/src/assets/images/mona_modules.png">
+![](@assets/images/mona_modules.png)
 
 Una vez encontrado nuestra librería o modulo que en este caso es libspp.dll, procedemos a buscar una instrucción JMP ESP en el modulo mencionado anteriormente que nos permita apuntar hacia nuestra shellcode. El equivalente de la instrucción mencionada arriba en hexadecimal es FFE4 así que, la vamos a buscar de la siguiente forma, nuevamente haciendo de uso del script mona.py: !mona find -s "\xff\xe4"
 
-<img src="/src/assets/images/salto_direccion.png">
+![](@assets/images/salto_direccion.png)
 
 Encontramos la dirección 0x10090C83 donde se encuentra la instrucción JMP ESP. Ahora modificamos nuestra variable y añadimos la dirección encontrada, hay que recordar que, la dirección debe ir al [revez](https://es.wikipedia.org/wiki/Endianness) de como esta escrita. Nuestra variable queda de la siguiente forma: `inputBuffer = "A" * 780 + "\x83\x0c\x09\x10" + "C" * 16 `
 
