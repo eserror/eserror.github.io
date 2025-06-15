@@ -1,5 +1,5 @@
 ---
-pubDatetime: 2025-06-15
+pubDatetime: 2025-06-16
 title: Tus datos han sido filtrados | educacion.gob.ec
 description: Ninguna inyección SQL fue necesaria, solo un apellido y el checkbox indicado para explotar el registro de títulos de bachilleres del Ecuador
 featured: true
@@ -104,7 +104,7 @@ En la pantalla de fondo, se encuentra la imágen `image.png`, esta se genera aut
 
 Lo importe de haber encontrado una falla en este componente, es que me permite realizar solicitudes al servicio, sin ningún tipo de restricción, lo cual es útil para extraer los registros de la base de datos de forma menos dolorosa.
 
-<img src="/src/assets/images/Pasted image 20250417200405.png">
+![](@assets/images/Pasted image 20250417200405.png)
 
 2. Sensitive Data Exposure
 
@@ -112,9 +112,9 @@ Existen dos formas de consultar información sobre un usuario específico, usand
 
 Usando la opción de los apellidos, es la que más retorno de inversión proporciona ya que solo es necesario un apellido random, y la aplicación te entrega la información de todos las personas que tengan ese apellido, es decir que si uso como apellido zambrano, mostrará la información de todos los ecuatorianos con ese apellido.
 
-<img src="/src/assets/images/Pasted image 20250417110345.png">
+![](@assets/images/Pasted image 20250417110345.png)
 
-<img src="/src/assets/images/Pasted image 20250417110500.png">
+![](@assets/images/Pasted image 20250417110500.png)
 
 ### Conclusión
 
@@ -124,4 +124,4 @@ Report Timeline
 
 17-04-2025: Reporte Inicial a EcuCert</br>
 22-05-2025: EcuCert responde alegando que no hay un programa responsable de divulgación de vulnerabilidades</br>
-15-06-2025: Sin respuesta
+16-06-2025: Sin respuesta

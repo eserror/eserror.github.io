@@ -6,6 +6,7 @@ featured: false
 author: eserror
 tags:
   - cancilleria
+  - ecuador
   - vulnerabilidad
 ---
 
@@ -21,11 +22,11 @@ Es decir, si un atacante consigue robar una sesión de usuario, él podrá reali
 
 En la imagen de abajo, se puede ver cómo la aplicación reacciona al recibir una solicitud sin una cookie en de autenticación en las cabeceras HTTP.
 
-<img src="/src/assets/images/Screenshot 2024-12-24 at 16.32.12.png">
+![](@assets/images/Screenshot 2024-12-24 at 16.32.12.png)
 
 En la siguiente imágen, se muestra la respuesta de la aplicación ante una solicitud HTTP que incluye una cookie ya expirada.
 
-<img src="/src/assets/images/Screenshot 2024-12-24 at 16.41.29.png">
+![](@assets/images/Screenshot 2024-12-24 at 16.41.29.png)
 
 En la imágen de arriba, se puede ver cómo claramente la aplicación falla al mostrar información sensible de otro usuario, mientras se hace uso de una sesion invalida. A pesar de existir una redirección, que idealmente debe llevar al usuario a volver a iniciar sesión, la aplicación entrega información de cualquier usuario para el cual se conozca su cédula, sin validar el tiempo de vida de la sesion.
 
@@ -100,6 +101,6 @@ Pero no es así, ya que el día de hoy revisando nuevamente el serivicio de apos
 
 Al mismo tiempo, se puede observar que la aplicación valida efectivamente si la sesión de un usuario ha expirado, y de acuerdo a esto, decide si mostrar la información solicitada o no.
 
-<img src="/src/assets/images/Screenshot 2025-03-08 at 01.09.48.png">
+![](@assets/images/Screenshot 2025-03-08 at 01.09.48.png")
 
 A pesar de que el proceso de remediación no fue tan fluido como esperaba, y muchos inconvenientes en el camino, aún así vale la pena aportar un granito de arena a la seguridad del país. 🫶
