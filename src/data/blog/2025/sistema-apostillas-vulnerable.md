@@ -101,6 +101,6 @@ Pero no es así, ya que el día de hoy revisando nuevamente el serivicio de apos
 
 Al mismo tiempo, se puede observar que la aplicación valida efectivamente si la sesión de un usuario ha expirado, y de acuerdo a esto, decide si mostrar la información solicitada o no.
 
-![](@assets/images/01.09.48.png")
+![](@assets/images/01.09.48.png)
 
 A pesar de que el proceso de remediación no fue tan fluido como esperaba, y muchos inconvenientes en el camino, aún así vale la pena aportar un granito de arena a la seguridad del país. 🫶

@@ -24,7 +24,7 @@ Después de haber terminado este cuestionario, que por cierto tiene preguntas in
 
 Austin "aprueba" mi perfil, y posteriormente me envía información adicional sobre el proyecto, mientras hace una pausa y guarda silencio, anticipando que yo diría algo respecto al videojuego.
 
-![]@assets/images/20250428095505.png)
+![](@assets/images/20250428095505.png)
 
 Debo admitir que todo parece 100% real, pues tienen una comunidad en Discord, un Whitepaper donde se encuentra una [sinopsis](https://eternal-decay.gitbook.io/metaworld) sobre el juego, e incluso una colección de [NFTs](https://opensea.io/collection/eternal-decay-metaverse) 😱
 
@@ -34,7 +34,7 @@ Ya que todo luce legítimo, solicito más detalles sobre las tareas a llevar a c
 
 Entonces es aquí donde Austin elimina toda duda sobre el pago, al ofrecer un cuota inicial para unirme al chat privado del equipo. Y es aquí también, donde la parte más crítica de la operación de Austin puede fallar o tener éxito.
 
-![](@assets/images/20250501122700.png")
+![](@assets/images/20250501122700.png)
 
 La información proporcionada por Austin es un poco random y sin ningún orden, algunas imágenes no coinciden y los pasos de instalación tampoco, ya que la aplicación que se muestra durante la instalación, no es la misma que se descarga para su instalación.
 

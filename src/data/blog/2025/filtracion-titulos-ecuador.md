@@ -3,7 +3,7 @@ pubDatetime: 2025-06-16
 title: Tus datos han sido filtrados | educacion.gob.ec
 description: Ninguna inyección SQL fue necesaria, solo un apellido y el checkbox indicado para explotar el registro de títulos de bachilleres del Ecuador
 featured: true
-draft: true
+draft: false
 author: eserror
 tags:
   - filtracion
